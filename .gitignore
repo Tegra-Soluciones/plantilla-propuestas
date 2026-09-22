@@ -1,0 +1,4 @@
+# Archivos de fuente: se quitaron del repo público por licenciamiento.
+# Siguen usándose en local para renderizar la plantilla (ver README).
+*.otf
+*.ttf

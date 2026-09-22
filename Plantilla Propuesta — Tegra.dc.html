@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/tegra-soluciones-design-system-019e1e6c-feb7-76a5-95bf-c9cfdb644ed9/colors_and_type.css">
+<script src="_ds/tegra-soluciones-design-system-019e1e6c-feb7-76a5-95bf-c9cfdb644ed9/_ds_bundle.js"></script>
+<script src="./doc-page.js"></script>
+<style>
+  /* ======================================================================
+     PLANTILLA DE PROPUESTA — TEGRA (versión general)
+     ----------------------------------------------------------------------
+     Este CSS es la librería de componentes. NO SE MODIFICA al llenar una
+     propuesta nueva — solo se reutiliza. Cada clase es una pieza:
+
+       .rh / .rf         encabezado y pie corridos de cada hoja
+       .kicker            número de sección en rojo, versalitas ("03 — ...")
+       h2.h2 / h3.h3      título de sección / de subsección (Inter, NUNCA LEMON MILK)
+       p.p / .lede        párrafo de cuerpo / párrafo de introducción atenuado
+       ul.l / ol.l        listas con viñeta o numeradas
+       .fin               línea de cierre en cursiva, opcional ("Al terminar, ...")
+       .fig / .fig-grid   COMPONENTE DE IMAGEN — ver hoja 4. Úsalo solo cuando
+                          haya una imagen real (foto, diagrama, plano, captura)
+                          que aporte a la sección; si no hay imagen, no lo
+                          incluyas. .fig-grid pone 2 imágenes lado a lado.
+       table.q            tabla de cotización (filo rojo) — se usa en la hoja
+                          de propuesta económica; también sirve para
+                          cualquier tabla comparativa dentro del cuerpo.
+       .qfoot             pie de la hoja de propuesta económica: logos de
+                          partners (opcional) + bloque de contacto.
+       .totrow/.totbox    caja de Subtotal / Descuento / IVA / Total, junto a
+                          una lista de condiciones (.cond). Descuento e IVA
+                          son filas OPCIONALES.
+       .tyc               bloque de cláusulas de Términos y Condiciones.
+       .phead / .phaselist  COMPONENTE OPCIONAL Y REUTILIZABLE — encabezado de
+                          bloque de fase/etapa ("FASE 1 · SEMANAS 1-2") y su
+                          mini-tabla resumen. Solo tiene sentido si el
+                          proyecto se organiza en fases o etapas explícitas;
+                          si el proyecto no las tiene, no los uses.
+
+     Solo el <h1> de portada usa LEMON MILK (var(--font-display)). Todo lo
+     demás usa Inter (var(--font-ui)) — así lo fijan las reglas de abajo.
+     ====================================================================== */
+  doc-page:not(:defined) { visibility: hidden; }
+  .page { display:flex; flex-direction:column; padding:0.58in 0.7in; font-family:var(--font-ui); box-sizing:border-box; }
+  .rh { display:flex; align-items:center; justify-content:space-between; padding-bottom:9px; border-bottom:1px solid var(--border); flex:none; }
+  .rh img { height:15px; width:auto; }
+  .rh span { font-size:9px; font-weight:500; letter-spacing:0.01em; color:var(--fg-subtle); }
+  .rf { display:flex; align-items:center; justify-content:space-between; padding-top:9px; border-top:1px solid var(--border); font-size:9px; font-weight:500; letter-spacing:0.01em; color:var(--fg-subtle); flex:none; margin-top:12px; }
+  .rf .cf { color:var(--tegra-red); }
+  .sec { margin-top:20px; flex:none; }
+  .sec.first { margin-top:22px; }
+  .kicker { font-family:var(--font-ui); font-size:10.5px; font-weight:600; letter-spacing:0.06em; color:var(--tegra-red); text-transform:uppercase; }
+  h2.h2 { font-family:var(--font-ui); font-size:18px; font-weight:600; line-height:1.25; letter-spacing:-0.015em; color:var(--neutral-900); margin:5px 0 0; }
+  h3.h3 { font-family:var(--font-ui); font-size:13px; font-weight:600; letter-spacing:-0.005em; color:var(--neutral-900); margin:15px 0 0; display:flex; align-items:center; gap:9px; }
+  h3.h3 .tick { display:inline-block; width:15px; height:2px; background:var(--tegra-red); flex:none; }
+  .phead { margin-top:16px; flex:none; }
+  .phead .pk { font-family:var(--font-ui); font-size:9.5px; font-weight:600; letter-spacing:0.05em; color:var(--tegra-red); text-transform:uppercase; }
+  .phead h4 { font-family:var(--font-ui); font-size:14px; font-weight:600; letter-spacing:-0.005em; color:var(--neutral-900); margin:2px 0 0; }
+  p.p { font-size:11.5px; line-height:1.6; color:var(--neutral-700); margin-top:9px; }
+  p.p.t { margin-top:6px; }
+  .lede { font-size:11.5px; line-height:1.55; color:var(--fg-muted); margin-top:8px; }
+  ul.l, ol.l { margin:6px 0 0; padding-left:16px; font-size:11px; line-height:1.5; color:var(--neutral-700); }
+  ul.l li, ol.l li { margin:2px 0; }
+  .fin { font-size:10.5px; font-style:italic; color:var(--neutral-600); margin-top:7px; }
+  .spacer { flex:1; min-height:0; }
+
+  /* Tamaño natural por defecto (ancho 100%, alto automático según la proporción real de la
+     imagen) — así nunca recorta un diagrama o captura ni deja franjas de blanco arriba/abajo.
+     Respeta siempre los márgenes de la hoja (0.7in): no sangres la imagen al borde salvo que el
+     usuario lo pida explícitamente. Si en vez de un diagrama vas a mostrar una FOTOGRAFÍA y
+     quieres que llene todo el espacio restante de la hoja (aceptando que se recorte), cambia
+     esta instancia del componente a flex:1; min-height:0 en .fig y object-fit:cover en .fig
+     img — pero esa es la excepción, no el default. */
+  .fig { margin-top:12px; flex:none; }
+  .fig img { width:100%; height:auto; display:block; border:1px solid var(--border); border-radius:2px; }
+  .fig figcaption { font-size:10px; line-height:1.4; color:var(--fg-subtle); margin-top:6px; flex:none; }
+  .fig-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:12px; }
+  .fig-grid .fig { margin-top:0; }
+
+  table.q { width:100%; border-collapse:collapse; text-align:left; margin-top:9px; }
+  table.q thead tr { border-bottom:2px solid var(--tegra-red); background:var(--neutral-50); }
+  table.q th { padding:5px 7px; font-weight:700; font-size:8px; letter-spacing:0.06em; text-transform:uppercase; color:var(--fg-muted); }
+  table.q td { padding:6px 8px; font-size:9.7px; line-height:1.45; color:var(--neutral-700); vertical-align:top; }
+  table.q tbody tr { border-bottom:1px solid var(--border); }
+  table.q td.c1 { font-weight:600; color:var(--neutral-900); }
+  table.q .num { text-align:right; white-space:nowrap; }
+  table.q tr.total td { border-top:2px solid var(--tegra-red); border-bottom:none; font-weight:700; color:var(--tegra-red); font-size:10px; padding-top:7px; }
+
+  .qfoot { margin-top:11px; border-top:1px solid var(--border); padding-top:8px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex:none; }
+  .qfoot .logos { display:flex; align-items:center; gap:13px; }
+  .qfoot .logos img { height:17px; width:auto; }
+  .qfoot .contact { text-align:right; font-size:8.5px; line-height:1.35; color:var(--neutral-700); }
+  .qfoot .contact .nm { font-weight:700; font-size:9.5px; color:var(--neutral-900); }
+  .qfoot .contact a { color:var(--tegra-red); text-decoration:none; }
+
+  .totrow { display:flex; justify-content:space-between; align-items:flex-start; margin-top:12px; gap:18px; flex:none; }
+  .totbox { width:230px; flex:none; font-size:10px; line-height:1.5; border-top:1px solid var(--border-strong); padding-top:4px; }
+  .totbox .r { display:flex; justify-content:space-between; color:var(--neutral-700); padding:1px 0; }
+  .totbox .r.grand { font-size:12px; font-weight:700; color:var(--tegra-red); border-top:2px solid var(--tegra-red); margin-top:6px; padding-top:5px; }
+  .cond { flex:1; font-size:8.5px; line-height:1.4; color:var(--neutral-700); }
+  .cond .h { font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-muted); margin-bottom:2px; }
+  .cond ul { margin:0; padding-left:12px; }
+
+  .tyc { margin-top:11px; flex:none; font-size:9.7px; line-height:1.48; color:var(--neutral-700); display:flex; flex-direction:column; gap:6px; }
+  .tyc b { color:var(--tegra-red); }
+
+  .phaselist { margin-top:14px; border-top:1px solid var(--border); padding-top:12px; flex:none; }
+  .phaselist .row { display:grid; grid-template-columns:70px 1fr 120px; gap:10px; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--neutral-100); font-size:11px; }
+  .phaselist .row .f { font-weight:700; color:var(--tegra-red); }
+  .phaselist .row .n { font-weight:500; color:var(--neutral-900); }
+  .phaselist .row .w { text-align:right; color:var(--fg-muted); }
+</style>
+</helmet>
+
+<!-- ==========================================================================================
+     CÓMO USAR ESTA PLANTILLA
+     ------------------------------------------------------------------------------------------
+     1. Copia este archivo junto con las carpetas/archivos de los que depende: `_ds/`,
+        `doc-page.js`, `support.js`, `assets/logo.png` y, si vas a usar el pie de la propuesta
+        económica con logos de certificaciones, `assets/cissp.png`, `assets/FP.png`,
+        `assets/GCP.png`, `assets/MSP.png`, `assets/QNAP.png` (todos opcionales). Si vas a usar
+        el componente de imagen (.fig), coloca las imágenes reales dentro de `assets/`.
+     2. Reemplaza cada [[ETIQUETA]] por el texto real. Los comentarios HTML de arriba de cada
+        bloque explican qué va ahí, el tono y qué es opcional. Los comentarios no se renderizan:
+        puedes dejarlos o borrarlos al terminar.
+     3. Cada <section class="page"> es UNA hoja A4 de tamaño fijo — doc-page.js la recorta si el
+        contenido no cabe (NO hace scroll ni salta de página sola). Esta plantilla trae 7 hojas
+        como punto de partida, pero es solo un ejemplo: el cuerpo de la propuesta (hojas 3-4) se
+        duplica tantas veces como secciones tenga el proyecto real — puede ser 1 sola hoja o 6.
+        El prompt de llenado trae el procedimiento para verificar que ninguna hoja quede
+        recortada ni vacía.
+     4. Los bloques marcados "(repetir)" se duplican tantas veces como haga falta (una fila de
+        tabla, una sección del cuerpo, una cláusula) y luego se borra el propio comentario.
+     5. Numeración de secciones: los kickers usan [[N]]. Numera consecutivamente solo las
+        secciones que de verdad uses y actualiza el índice de la portada para que coincida.
+     6. IMPORTANTE — nunca escribas `{{ }}` en este archivo (ni en texto visible ni dentro de un
+        comentario). El runtime que renderiza este `.dc.html` interpreta `{{ }}` como una
+        variable de datos y BORRA ese texto en silencio, sin error. Por eso todos los marcadores
+        de esta plantilla usan corchetes dobles `[[ ]]`.
+   ========================================================================================== -->
+
+<doc-page size="a4">
+
+<!-- ============ HOJA 1 · PORTADA ============ -->
+<section class="page" id="p-cover">
+  <div class="rh"><img src="assets/logo.png" alt="Tegra"><span>[[TIPO_DE_DOCUMENTO]] · [[CLIENTE]]</span></div>
+
+  <div style="flex:none; padding-top:26px;">
+    <span style="font-size:10px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--fg-muted); display:inline-block; padding-bottom:10px; border-bottom:3px solid var(--tegra-red);">[[TIPO_DE_DOCUMENTO]]</span>
+    <!-- Único texto del documento en LEMON MILK. Título corto, 2-4 líneas máx a ~20 caracteres por línea. -->
+    <h1 style="font-family:var(--font-display); font-size:29px; font-weight:700; line-height:1.14; letter-spacing:-0.01em; color:var(--neutral-900); margin:20px 0 0; max-width:20ch;">[[TÍTULO DEL PROYECTO]]</h1>
+    <p style="font-size:12.5px; line-height:1.55; color:var(--fg-muted); max-width:62ch; margin-top:12px;">[[Una frase que resuma el proyecto: qué se hace, para quién y con qué objetivo.]]</p>
+  </div>
+
+  <!-- Cuarta celda: "Fecha" solo si el cliente la pide o hay un documento previo que fechar. Si
+       es la primera propuesta y no hay fechas comprometidas, usa "Contacto" como aquí. -->
+  <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:0; border-top:1px solid var(--border); margin-top:20px; flex:none;">
+    <div style="padding:10px 20px 10px 0; border-bottom:1px solid var(--border);"><div style="font-size:9px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-subtle);">Preparado por</div><div style="font-size:12.5px; font-weight:500; color:var(--neutral-900); margin-top:4px;">Tegra</div></div>
+    <div style="padding:10px 0 10px 20px; border-bottom:1px solid var(--border); border-left:1px solid var(--border);"><div style="font-size:9px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-subtle);">Para</div><div style="font-size:12.5px; font-weight:500; color:var(--neutral-900); margin-top:4px;">[[CLIENTE]]</div></div>
+    <div style="padding:10px 20px 10px 0;"><div style="font-size:9px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-subtle);">Documento</div><div style="font-size:12.5px; font-weight:500; color:var(--neutral-900); margin-top:4px;">[[TIPO_DE_DOCUMENTO]]</div></div>
+    <div style="padding:10px 0 10px 20px; border-left:1px solid var(--border);"><div style="font-size:9px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-subtle);">Contacto</div><div style="font-size:12.5px; font-weight:500; color:var(--neutral-900); margin-top:4px;">[[CONTACTO_NOMBRE]] · [[CONTACTO_EMAIL]]</div></div>
+  </div>
+
+  <p class="p" style="font-size:12px; margin-top:18px;">[[Párrafo 1: qué presenta este documento y cómo está organizado.]]</p>
+  <p class="p" style="font-size:12px;">[[Párrafo 2, opcional.]]</p>
+
+  <div class="spacer"></div>
+
+  <!-- Índice: una línea por sección realmente usada. Con menos de 6 secciones se ve mejor en una
+       sola columna; con más, en dos como aquí. Ajusta el número de filas al proyecto real. -->
+  <div style="border-top:1px solid var(--border); padding-top:10px; flex:none;">
+    <div style="font-size:9px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--fg-muted);">Contenido</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px 30px; margin-top:8px; font-size:10.5px; line-height:1.7; color:var(--neutral-700);">
+      <div><span style="color:var(--tegra-red); font-weight:600;">1</span>&nbsp; Objetivo de la propuesta</div>
+      <div><span style="color:var(--tegra-red); font-weight:600;">[[N]]</span>&nbsp; Propuesta económica</div>
+      <div><span style="color:var(--tegra-red); font-weight:600;">2</span>&nbsp; [[Resumen o introducción]]</div>
+      <div><span style="color:var(--tegra-red); font-weight:600;">[[N]]</span>&nbsp; Lo que necesitamos de [[CLIENTE]]</div>
+      <div><span style="color:var(--tegra-red); font-weight:600;">3</span>&nbsp; Solución propuesta</div>
+      <div><span style="color:var(--tegra-red); font-weight:600;">[[N]]</span>&nbsp; Términos y condiciones</div>
+      <div><span style="color:var(--tegra-red); font-weight:600;">4…[[N]]</span>&nbsp; [[Secciones del cuerpo de la propuesta — una fila por sección real]]</div>
+      <div><span style="color:var(--tegra-red); font-weight:600;">[[N]]</span>&nbsp; Advertencias &nbsp;·&nbsp; <span style="color:var(--tegra-red); font-weight:600;">[[N]]</span>&nbsp; Siguientes pasos</div>
+    </div>
+  </div>
+
+  <div style="display:flex; align-items:center; justify-content:space-between; padding-top:9px; border-top:1px solid var(--border); font-size:9px; font-weight:500; color:var(--fg-subtle); flex:none; margin-top:10px;">
+    <span>Tegra</span>
+    <span style="color:var(--tegra-red);">Documento confidencial preparado exclusivamente para [[CLIENTE]]</span>
+  </div>
+</section>
+
+<!-- ============ HOJA 2 · Objetivo + Resumen/Intro + Solución propuesta ============ -->
+<section class="page" id="p-2">
+  <div class="rh"><img src="assets/logo.png" alt="Tegra"><span>[[TIPO_DE_DOCUMENTO]] · [[CLIENTE]] · Preparada por Tegra</span></div>
+
+  <div class="sec first"><div class="kicker">1</div><h2 class="h2">Objetivo de la propuesta</h2></div>
+  <!-- 2-4 líneas: qué se va a hacer y para qué. Es la declaración más corta y directa de todo el
+       documento — evita repetir aquí el detalle que va en "Solución propuesta". -->
+  <p class="p">[[Texto del objetivo.]]</p>
+
+  <div class="sec"><div class="kicker">2</div><h2 class="h2">[[Resumen o introducción]]</h2></div>
+  <!-- Esta sección es flexible: úsala como resumen ejecutivo de la propuesta completa, o como
+       contexto/antecedentes (qué existe hoy, qué situación motiva el proyecto), lo que tenga
+       más sentido para este cliente. Renombra el <h2> de arriba a algo concreto, p. ej.
+       "Resumen ejecutivo", "De dónde partimos", "Contexto del proyecto". -->
+  <p class="p">[[Texto de resumen o contexto.]]</p>
+
+  <div class="sec"><div class="kicker">3</div><h2 class="h2">Solución propuesta</h2></div>
+  <h3 class="h3"><span class="tick"></span>[[Subtítulo de la primera idea de la solución]]</h3>
+  <p class="p t">[[Explicación de la solución propuesta.]]</p>
+
+  <!-- BLOQUE OPCIONAL Y REUTILIZABLE — tabla comparativa de opciones evaluadas. Úsala solo si el
+       proyecto implicó comparar alternativas (plataformas, proveedores, enfoques). De 2 a 5
+       filas. Si no aplica, borra toda la <table> y el párrafo que la precede. Este mismo
+       componente (table.q) se reutiliza más abajo en la propuesta económica. -->
+  <p class="p t">[[Frase que introduce la comparación, si aplica.]]</p>
+  <table class="q">
+    <thead><tr><th style="width:22%;">[[Criterio 1]]</th><th style="width:20%;">[[Criterio 2]]</th><th style="width:20%;">[[Criterio 3]]</th><th style="width:20%;">[[Criterio 4]]</th><th style="width:18%;">Veredicto</th></tr></thead>
+    <tbody>
+      <!-- (repetir una fila por opción evaluada; la recomendada lleva su celda de Veredicto en rojo) -->
+      <tr><td class="c1">[[Opción A]]</td><td>[[...]]</td><td>[[...]]</td><td>[[...]]</td><td style="font-weight:700; color:var(--tegra-red);">Recomendada</td></tr>
+      <tr><td class="c1">[[Opción B]]</td><td>[[...]]</td><td>[[...]]</td><td>[[...]]</td><td>Descartada</td></tr>
+    </tbody>
+  </table>
+  <p class="p t">[[Nota breve explicando por qué se descartaron las otras opciones, si aplica.]]</p>
+
+  <div class="spacer"></div>
+  <div class="rf"><span>Tegra</span><span class="cf">Documento confidencial</span></div>
+</section>
+
+<!-- ==========================================================================================
+     HOJAS 3-4 · CUERPO DE LA PROPUESTA
+     ------------------------------------------------------------------------------------------
+     A partir de aquí el documento son secciones de texto, con imágenes cuando aporten valor.
+     Esto es lo más variable de toda la plantilla: DUPLICA este patrón de hoja tantas veces como
+     secciones reales tenga el proyecto (puede ser solo esta hoja, o seis hojas). Cada sección
+     nueva es un <div class="sec"> con su <div class="kicker"> y su <h2 class="h2">; dentro,
+     usa <h3 class="h3"> para subtemas, <p class="p">/<ul class="l">/<ol class="l"> para el
+     contenido, y el componente de imagen (.fig) cuando haya una imagen real que mostrar.
+   ========================================================================================== -->
+
+<!-- ============ HOJA 3 · Cuerpo de la propuesta — ejemplo de sección solo texto ============ -->
+<section class="page" id="p-3">
+  <div class="rh"><img src="assets/logo.png" alt="Tegra"><span>[[TIPO_DE_DOCUMENTO]] · [[CLIENTE]] · Preparada por Tegra</span></div>
+
+  <div class="sec first"><div class="kicker">4</div><h2 class="h2">[[Título de la primera sección del cuerpo]]</h2></div>
+  <p class="lede">[[Una o dos líneas de introducción a la sección, opcional.]]</p>
+
+  <h3 class="h3"><span class="tick"></span>[[Subtema 1]]</h3>
+  <p class="p t">[[Texto.]]</p>
+
+  <h3 class="h3"><span class="tick"></span>[[Subtema 2]]</h3>
+  <p class="p t">[[Texto.]]</p>
+  <ul class="l">
+    <li>[[Punto 1]]</li>
+    <li>[[Punto 2]]</li>
+    <!-- (repetir un <li> por punto; usa <ol class="l"> en vez de <ul class="l"> si el orden importa, como un flujo paso a paso) -->
+  </ul>
+
+  <!-- (repetir el patrón kicker + h2 + h3 + prosa/lista por cada sección adicional que quepa en esta hoja) -->
+
+  <div class="spacer"></div>
+  <div class="rf"><span>Tegra</span><span class="cf">Documento confidencial</span></div>
+</section>
+
+<!-- ============ HOJA 4 · Cuerpo de la propuesta — ejemplo con imagen y bloque de fase opcional ============ -->
+<section class="page" id="p-4">
+  <div class="rh"><img src="assets/logo.png" alt="Tegra"><span>[[TIPO_DE_DOCUMENTO]] · [[CLIENTE]] · Preparada por Tegra</span></div>
+
+  <div class="sec first"><div class="kicker">5</div><h2 class="h2">[[Título de otra sección del cuerpo]]</h2></div>
+  <p class="p t">[[Texto.]]</p>
+
+  <!-- COMPONENTE DE IMAGEN (.fig) — reutilizable en cualquier hoja del cuerpo. Úsalo solo cuando
+       tengas una imagen real (foto del sitio, diagrama, plano, captura de pantalla, mockup) que
+       aporte información a la sección. Si no hay imagen para esta sección, borra el <figure>
+       completo — nunca dejes un <img src=""> vacío ni una imagen inventada. El pie de foto
+       (<figcaption>) es opcional; bórralo si la imagen no necesita explicación. -->
+  <figure class="fig">
+    <img src="assets/[[nombre-de-archivo.jpg]]" alt="[[Descripción de la imagen para accesibilidad]]">
+    <figcaption>[[Pie de foto opcional, p. ej. "Figura 1. ..."]]</figcaption>
+  </figure>
+  <!-- Para dos imágenes lado a lado, envuélvelas así en vez de usar dos <figure class="fig"> sueltos:
+       <div class="fig-grid">
+         <figure class="fig"><img src="..." alt="..."></figure>
+         <figure class="fig"><img src="..." alt="..."></figure>
+       </div>
+  -->
+
+  <!-- BLOQUE OPCIONAL Y REUTILIZABLE — organización en fases/etapas. Úsalo solo si el proyecto
+       real se divide en fases o etapas explícitas con su propio entregable; si el proyecto no
+       las tiene, bórralo entero (incluidos .phead y .phaselist). -->
+  <div class="phead">
+    <div class="pk">[[Fase 1]] · [[Semanas o fechas]]</div>
+    <h4>[[Nombre de la fase]]</h4>
+  </div>
+  <ul class="l" style="font-size:10.3px;">
+    <li>[[Entregable de la fase]]</li>
+    <!-- (repetir un <li> por entregable; repetir todo el bloque .phead + <ul> por cada fase) -->
+  </ul>
+  <p class="fin">[[Frase de cierre de la fase, opcional.]]</p>
+
+  <!-- Mini-tabla resumen de fases, opcional — úsala si hay 3+ fases y conviene un vistazo rápido
+       antes del detalle. (repetir un <div class="row"> por fase; la última sin borde inferior) -->
+  <div class="phaselist">
+    <div class="row"><span class="f">[[Fase 1]]</span><span class="n">[[Nombre]]</span><span class="w">[[Semanas/fechas]]</span></div>
+    <div class="row" style="border-bottom:none;"><span class="f">[[Fase N]]</span><span class="n">[[Nombre]]</span><span class="w">[[Semanas/fechas]]</span></div>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="rf"><span>Tegra</span><span class="cf">Documento confidencial</span></div>
+</section>
+
+<!-- ============ HOJA 5 · PROPUESTA ECONÓMICA ============ -->
+<!-- Una sola hoja con el costo del proyecto — no se separa en "costos externos" y "honorarios de
+     Tegra" salvo que el proyecto realmente lo requiera (ver nota más abajo). -->
+<section class="page" id="p-economica">
+  <div class="rh"><img src="assets/logo.png" alt="Tegra"><span>[[TIPO_DE_DOCUMENTO]] · [[CLIENTE]] · Preparada por Tegra</span></div>
+
+  <div class="sec first"><div class="kicker">6</div><h2 class="h2">Propuesta económica</h2></div>
+  <!-- Renombra el título si conviene más "Inversión", "Costos y honorarios", etc. -->
+  <p class="p t" style="font-size:10.5px;">[[Explicación breve: qué cubre este costo, si el precio es cerrado o estimado, y cómo se factura. No menciones anticipos ni splits de pago (50/50, etc.) salvo que el cliente ya los haya aceptado — usa una frase neutra como "Las condiciones de facturación se acuerdan por escrito antes de iniciar el proyecto."]]</p>
+  <!-- Nota opcional: solo si hay costos de terceros que puedan variar, o si el precio depende de
+       una revisión/diagnóstico posterior. Bórrala si el precio es fijo y no depende de nadie más. -->
+  <p class="p t" style="font-size:9.5px; color:var(--fg-muted);">[[Nota opcional sobre variabilidad del precio (tipo de cambio, precios de terceros, ajuste tras una revisión técnica).]]</p>
+
+  <table class="q">
+    <thead><tr><th style="width:22%;">[[Concepto / Fase / Entregable]]</th><th style="width:59%;">Qué incluye</th><th class="num" style="width:19%;">[[Importe]] ([[MONEDA]])</th></tr></thead>
+    <tbody>
+      <!-- (repetir una fila por concepto, fase o entregable facturable) -->
+      <tr><td class="c1">[[Concepto 1]]</td><td>[[Qué incluye.]]</td><td class="num">[[$importe]]</td></tr>
+    </tbody>
+  </table>
+
+  <div class="totrow">
+    <div class="cond">
+      <div class="h">Condiciones</div>
+      <ul>
+        <!-- 2-4 condiciones clave. Nunca incluir anticipos/splits de pago no acordados. -->
+        <li>[[Duración total del proyecto, si aplica.]]</li>
+        <li>[[Qué asume Tegra vs. qué corresponde al cliente.]]</li>
+      </ul>
+    </div>
+    <!-- Caja de totales. Las filas de "Descuento" e "IVA" son OPCIONALES — bórralas si no
+         aplican. Si hay descuento, resáltalo en rojo con el mismo estilo inline de abajo. -->
+    <div class="totbox">
+      <div class="r"><span>Subtotal[[ (tarifa de lista), si hay descuento]]</span><span style="font-weight:600;">[[$subtotal]]</span></div>
+      <div class="r" style="color:var(--tegra-red); font-weight:700;"><span>Descuento ([[X]]%)</span><span>– [[$descuento]]</span></div>
+      <div class="r"><span>Subtotal con descuento</span><span style="font-weight:600;">[[$subtotal_con_descuento]]</span></div>
+      <div class="r"><span>IVA ([[X]]%)</span><span style="font-weight:600;">[[$iva]]</span></div>
+      <div class="r grand"><span>Total[[ con IVA]]</span><span>[[$total]]</span></div>
+    </div>
+  </div>
+
+  <p class="p" style="font-size:10px; margin-top:14px;">[[Párrafo de cierre, opcional: moneda, vigencia de la cotización, qué queda fuera de este precio.]]</p>
+
+  <div class="spacer"></div>
+
+  <!-- Pie de la propuesta económica: logos de certificaciones/partners de Tegra (opcional —
+       bórralo si no aplica a este cliente) + datos de contacto de quien firma la propuesta. -->
+  <div class="qfoot">
+    <div class="logos"><img src="assets/cissp.png" alt="CISSP"><img src="assets/FP.png" alt="Fortinet Authorized Partner"><img src="assets/GCP.png" alt="Google Cloud Partner"><img src="assets/MSP.png" alt="Microsoft Solutions Partner"><img src="assets/QNAP.png" alt="QNAP Registered Partner"></div>
+    <div class="contact"><div class="nm">[[CONTACTO_NOMBRE]]</div><div><a href="mailto:[[CONTACTO_EMAIL]]">[[CONTACTO_EMAIL]]</a> • Tel. [[CONTACTO_TEL]]</div><div style="color:var(--fg-subtle);">[[CONTACTO_DIRECCIÓN]]</div></div>
+  </div>
+  <div class="rf"><span>Tegra</span><span class="cf">Documento confidencial</span></div>
+</section>
+<!-- Nota: si el proyecto SÍ necesita separar lo que el cliente paga a proveedores externos de lo
+     que le paga a Tegra (por ejemplo, licencias que el cliente contrata directamente, sin margen
+     de Tegra), duplica esta misma hoja completa (table.q + totrow + qfoot) como una segunda
+     página de "Costos de plataformas y servicios que [[CLIENTE]] paga a proveedores externos",
+     antes de esta. Por defecto, sin embargo, usa una sola hoja de propuesta económica. -->
+
+<!-- ============ HOJA 6 · Lo que necesitamos del cliente + Términos y condiciones ============ -->
+<section class="page" id="p-6">
+  <div class="rh"><img src="assets/logo.png" alt="Tegra"><span>[[TIPO_DE_DOCUMENTO]] · [[CLIENTE]] · Preparada por Tegra</span></div>
+
+  <div class="sec first"><div class="kicker">[[N]]</div><h2 class="h2">Lo que necesitamos de [[CLIENTE]]</h2></div>
+  <p class="p t" style="font-size:10.5px;">El cronograma depende de recibir estos elementos en tiempo. Si alguno se retrasa, el proyecto se pausa sin costo adicional, pero la fecha de entrega se recorre en la misma medida.</p>
+  <ul class="l" style="font-size:10.3px;">
+    <li><strong>[[Antes de iniciar / Semana X:]]</strong> [[Qué debe entregar el cliente.]]</li>
+    <!-- (repetir un <li> por hito de entrada; ordénalos cronológicamente). Nunca pidas datos
+         personales/sensibles de terceros del cliente (empleados, usuarios, proveedores) salvo
+         que el proyecto explícitamente lo requiera — eso normalmente no le corresponde a Tegra. -->
+  </ul>
+
+  <!-- Términos y condiciones: cláusulas genéricas reutilizables tal cual, salvo la nota de cada
+       una. Bórrala si no corresponde a este proyecto y renumera las que queden. Ninguna cláusula
+       debe mencionar anticipos ni splits de pago salvo que el cliente ya los haya aceptado. -->
+  <div class="sec" style="margin-top:18px;"><div class="kicker">[[N]]</div><h2 class="h2">Términos y condiciones</h2></div>
+  <div class="tyc">
+    <div><b>[[N]].1 Vigencia y precios.</b> Esta propuesta tiene una vigencia de treinta días naturales a partir de su emisión. [[Si hay precios de terceros: "Los precios de licencias y servicios de terceros provienen de sus listas públicas vigentes y pueden cambiar sin previo aviso; las conversiones a [moneda] son de referencia y se ajustarán al tipo de cambio del día de cada pago."]]</div>
+    <div><b>[[N]].2 Facturación.</b> Los honorarios se facturan [[por fase / por entregable / según se acuerde]]. Las condiciones de facturación se acuerdan por escrito antes de iniciar el proyecto. Los importes son en [[MONEDA]][[; el IVA se aplica conforme a la sección de propuesta económica, si aplica]].</div>
+    <!-- Solo si hay una fase de diagnóstico/verificación previa que puede cambiar el alcance: -->
+    <div><b>[[N]].3 Confirmación de alcance.</b> [[Qué fases se confirman en firme y bajo qué condición (p. ej. al concluir una fase de verificación técnica). Bórrala si el alcance ya es firme desde esta propuesta.]]</div>
+    <div><b>[[N]].4 Condiciones de la tarifa.</b> Los honorarios corresponden a la ejecución continua de las fases en el orden y el calendario descritos. Si el proyecto se fracciona, se detiene por más de sesenta días o se contratan fases de forma aislada, Tegra revisará la cotización antes de continuar.</div>
+    <div><b>[[N]].5 Cambios de alcance.</b> Cualquier trabajo no contemplado en este documento se cotiza por escrito y se autoriza antes de ejecutarse. No se realizan trabajos adicionales sin autorización previa, aun cuando medie urgencia.</div>
+    <div><b>[[N]].6 Garantía.</b> Tegra garantiza la corrección sin costo de cualquier defecto en lo entregado durante los treinta días naturales posteriores al cierre de cada fase. No cubre cambios de alcance, contenido nuevo, ni fallas originadas por actualizaciones de componentes o proveedores externos ajenos a la configuración entregada.</div>
+    <div><b>[[N]].7 Titularidad y propiedad.</b> Todas las licencias, cuentas y servicios contratados quedan a nombre de [[CLIENTE]]. Al cierre del proyecto, Tegra entrega el documento completo de accesos y credenciales junto con la documentación técnica. Las configuraciones y personalizaciones desarrolladas quedan en propiedad de [[CLIENTE]]. Tegra no retiene accesos, licencias ni credenciales bajo ninguna circunstancia.</div>
+    <!-- Solo si el cliente sigue operando durante el proyecto (p. ej. un sitio o sistema en vivo): -->
+    <div><b>[[N]].8 Continuidad de la operación.</b> El trabajo se realiza en un entorno de pruebas y se despliega a producción en ventanas acordadas. [[La operación del cliente continúa con normalidad durante todo el proyecto]], salvo las ventanas de despliegue previamente notificadas.</div>
+    <!-- Solo si el proyecto integra componentes/licencias de terceros: -->
+    <div><b>[[N]].9 Responsabilidades de terceros.</b> [[Qué componentes son de terceros]] son desarrollados por proveedores externos. Tegra los configura, los mantiene actualizados y gestiona el soporte con dichos proveedores, pero no responde por defectos originados en su código ni por cambios que dichos proveedores realicen a sus productos.</div>
+    <!-- Solo si hay licencias/servicios de renovación periódica: -->
+    <div><b>[[N]].10 Renovaciones.</b> Las licencias y servicios de terceros son de renovación [[periodicidad]]. Su vencimiento no detiene la operación[[, pero suspende actualizaciones de seguridad, lo que no es recomendable]]. Tegra notifica cada renovación con al menos treinta días de anticipación.</div>
+    <div><b>[[N]].11 Confidencialidad.</b> Tegra tratará como confidencial toda la información del negocio [[y de terceros relevantes, si aplica]] a la que tenga acceso, y no la utilizará para ningún fin distinto a la ejecución de este proyecto.</div>
+    <div><b>[[N]].12 Pausas y cancelación.</b> Si [[CLIENTE]] no entrega los elementos de la sección [[N]] en las fechas comprometidas, el cronograma se pausa sin costo adicional y las fechas se recorren proporcionalmente. En caso de cancelación, se cubre el trabajo efectivamente realizado hasta ese punto y Tegra entrega todo lo desarrollado.</div>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="rf"><span>Tegra</span><span class="cf">Documento confidencial</span></div>
+</section>
+
+<!-- ============ HOJA 7 · Advertencias + Siguientes pasos + firma ============ -->
+<section class="page" id="p-cierre">
+  <div class="rh"><img src="assets/logo.png" alt="Tegra"><span>[[TIPO_DE_DOCUMENTO]] · [[CLIENTE]] · Preparada por Tegra</span></div>
+
+  <!-- Advertencias: riesgos, dependencias o supuestos que Tegra prefiere dejar por escrito para
+       que no aparezcan como sorpresa después. 2-4 bloques suele bastar; bórrala entera si el
+       proyecto no tiene riesgos/dependencias relevantes que señalar. -->
+  <div class="sec first"><div class="kicker">[[N]]</div><h2 class="h2">Advertencias declaradas</h2></div>
+  <p class="lede">Preferimos señalarlas por adelantado a que aparezcan como sorpresas más adelante.</p>
+  <h3 class="h3"><span class="tick"></span>[[Título de la advertencia 1]]</h3>
+  <p class="p t">[[Texto: cuál es el riesgo/supuesto y cómo se resuelve o se maneja.]]</p>
+  <!-- (repetir h3 + p por cada advertencia) -->
+
+  <div class="sec"><div class="kicker">[[N]]</div><h2 class="h2">Siguientes pasos</h2></div>
+  <ol class="l" style="font-size:11.5px; line-height:1.6;">
+    <li>[[Cliente revisa la propuesta / resuelve dudas.]]</li>
+    <li>[[Cliente confirma por escrito la aceptación del alcance.]]</li>
+    <li>[[Se entregan accesos y se agenda el inicio.]]</li>
+    <li>[[Cuándo puede arrancar la primera fase.]]</li>
+  </ol>
+  <p class="p" style="font-size:10.5px;">Contacto para cualquier aclaración sobre el alcance, el calendario o los importes: [[CONTACTO_NOMBRE]] — <a href="mailto:[[CONTACTO_EMAIL]]" style="color:var(--tegra-red); text-decoration:none;">[[CONTACTO_EMAIL]]</a>, Tel. [[CONTACTO_TEL]].</p>
+
+  <div class="spacer"></div>
+
+  <div style="padding-top:12px; border-top:3px solid var(--tegra-red); display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex:none;">
+    <div>
+      <div style="font-size:12px; font-weight:600; color:var(--neutral-900);">Tegra</div>
+      <div style="font-size:10px; line-height:1.45; color:var(--fg-muted); margin-top:3px; max-width:58ch;">Documento confidencial preparado por Tegra exclusivamente para [[CLIENTE]]. [[TIPO_DE_DOCUMENTO]].</div>
+    </div>
+    <img src="./icon-ms9ibmi9-5drh.png" alt="" style="width:32px; height:auto; opacity:0.9; flex:none;">
+  </div>
+</section>
+
+</doc-page>
+</body>
+</html>

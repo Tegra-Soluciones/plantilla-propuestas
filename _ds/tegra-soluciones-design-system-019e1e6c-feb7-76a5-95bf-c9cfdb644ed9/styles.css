@@ -1,0 +1,6 @@
+/* =========================================================================
+   Tegra Soluciones — Design System entry point
+   Single stylesheet consumers should link. Re-exports the color, type,
+   spacing, radii, shadow and motion foundations.
+   ========================================================================= */
+@import url("colors_and_type.css");
